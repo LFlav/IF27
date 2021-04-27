@@ -4,22 +4,35 @@ from pythonping import ping
 
 def displayPortScanning(result,ip):
     from colorama import Fore,Style
-    import json
-    ports_list=result[ip]
-    for port in ports_list['ports']:
-        if port['state'] == "closed":
-            print(Fore.RED + " - " + port['service']['name'] + " "+ port['state'] + " "+ port['reason'] + Style.RESET_ALL)
-        elif port['state'] == "open":
-            print(Fore.GREEN + " + " + port['service']['name'] + " "+ port['state'] + " "+ port['reason'] + Style.RESET_ALL)
-        else:
-            print(Fore.ORANGE + " ~ " + port['service']['name'] + " "+ port['state'] + " "+ port['reason'] + Style.RESET_ALL)
-
+    print('----------------------------------------------------')
+    if len(result['scan'][ip]['hostnames'][0]['name']) != 0 :
+        print('Hote : %s (%s)' % (ip, result['scan'][ip]['hostnames'][0]['name']))
+    else :
+        print('Hote : %s ' % (ip))
+    print('Etat : %s' % result['scan'][ip]['status']['state'])
+    for port in result['scan'][ip]['tcp'].keys():
+        if result['scan'][ip]['tcp'][port]['state'] == 'open' :
+            if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
+                print(Fore.GREEN + ' + Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+            elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
+                print(Fore.GREEN +' + Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+        elif result['scan'][ip]['tcp'][port]['state'] == 'closed' :
+            if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
+                print(Fore.RED + ' - Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+            elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
+                print(Fore.RED +' - Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+        else :
+            if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
+                print(Fore.YELLOW + ' ~ Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+            elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
+                print(Fore.YELLOW + ' ~ Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+"""
 def displayDNSScanning(result):
     if not result:
         print("Aucune information dns n'est disponible")
     else:
         print(result)
-
+"""
 #Pretty banner
 print("-" * 50)
 print("Bienvenu dans l'outil de scanning réseaux IF27")
@@ -51,7 +64,6 @@ elif platform == "win32":
                     network.append(ipaddr.group(0))
     os.system("del temp.txt")
 
-print(network)
 #Display list of network connected to user with format 192.168.1.x
 availableChoise = []
 i = 1
@@ -97,29 +109,32 @@ else:
 
 try:
     response = 1
-    import nmap3
-    scanner = nmap3.NmapScanTechniques()
+    import nmap
+    portScanner = nmap.PortScanner()
     while response in range(1,4):
         response = input("""\nQuel action voulez vous faire
                         1)Scan DNS
                         2)Scan machine
-                        3)Scan port
-                        4)
+                        3)Scan port (22-443)
+                        4)Scan port
                         5)Quitter\n""")
         print("You have selected option: ", response)
         if response == '1':
-            displayDNSScanning(nmap3.Nmap().nmap_dns_brute_script(choosenDevice))
+            pass
         elif response == '2':
-            print(scanner.nmap_ping_scan(choosenDevice))
+            pass
         elif response == '3':
-            displayPortScanning(nmap3.Nmap().scan_top_ports(choosenDevice),choosenDevice)
+            displayPortScanning(portScanner.scan(choosenDevice, '22-443'),choosenDevice)
         elif response == '4':
+            choise = input("Choissisez un port à vérifier : ")
+            displayPortScanning(portScanner.scan(choosenDevice,choise),choosenDevice)
+        elif response == '5':
             print("Au revoir")
             sys.exit()
         else:
             print("Choix non valid")
         response = 1
-except nmap3.exceptions.NmapNotInstalledError:
+except nmap.PortScannerError:
     print("Erreur : nmap n'est pas installé sur cet ordinateur")
     sys.exit()
 
