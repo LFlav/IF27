@@ -13,23 +13,40 @@ def displayPortScanning(result,ip):
         if len(result['scan'][ip]['osmatch']) != 0 :
             print('OS : %s' % result['scan'][ip]['osmatch'][0]['name'])
     print('Etat : %s' % result['scan'][ip]['status']['state'])
-    for port in result['scan'][ip]['tcp'].keys():
-        if result['scan'][ip]['tcp'][port]['state'] == 'open' :
-            if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
-                print(Fore.GREEN + ' + Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
-            elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
-                print(Fore.GREEN +' + Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
-        elif result['scan'][ip]['tcp'][port]['state'] == 'closed' :
-            if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
-                print(Fore.RED + ' - Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
-            elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
-                print(Fore.RED +' - Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
-        else :
-            if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
-                print(Fore.YELLOW + ' ~ Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
-            elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
-                print(Fore.YELLOW + ' ~ Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
-    
+    if 'tcp' in result['scan'][ip].keys():
+        for port in result['scan'][ip]['tcp'].keys():
+            if result['scan'][ip]['tcp'][port]['state'] == 'open' :
+                if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
+                    print(Fore.GREEN + ' + Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+                elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
+                    print(Fore.GREEN +' + Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+            elif result['scan'][ip]['tcp'][port]['state'] == 'closed' :
+                if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
+                    print(Fore.RED + ' - Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+                elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
+                    print(Fore.RED +' - Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+            else :
+                if len(result['scan'][ip]['tcp'][port]['product']) != 0 :
+                    print(Fore.YELLOW + ' ~ Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['product']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+                elif len(result['scan'][ip]['tcp'][port]['name']) != 0 :
+                    print(Fore.YELLOW + ' ~ Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['tcp'][port]['name']), str(result['scan'][ip]['tcp'][port]['state'])) + Style.RESET_ALL)
+    else:
+        for port in result['scan'][ip]['portused'].keys():
+            if result['scan'][ip]['portused'][port]['state'] == 'open' :
+                if len(result['scan'][ip]['portused'][port]['product']) != 0 :
+                    print(Fore.GREEN + ' + Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['portused'][port]['product']), str(result['scan'][ip]['portused'][port]['state'])) + Style.RESET_ALL)
+                elif len(result['scan'][ip]['portused'][port]['name']) != 0 :
+                    print(Fore.GREEN +' + Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['portused'][port]['name']), str(result['scan'][ip]['portused'][port]['state'])) + Style.RESET_ALL)
+            elif result['scan'][ip]['tcp'][port]['state'] == 'closed' :
+                if len(result['scan'][ip]['portused'][port]['product']) != 0 :
+                    print(Fore.RED + ' - Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['portused'][port]['product']), str(result['scan'][ip]['portused'][port]['state'])) + Style.RESET_ALL)
+                elif len(result['scan'][ip]['portused'][port]['name']) != 0 :
+                    print(Fore.RED +' - Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['portused'][port]['name']), str(result['scan'][ip]['portused'][port]['state'])) + Style.RESET_ALL)
+            else :
+                if len(result['scan'][ip]['portused'][port]['product']) != 0 :
+                    print(Fore.YELLOW + ' ~ Port : %s\tType : %s\tState : %s' % (str(port),str(result['scan'][ip]['portused'][port]['product']), str(result['scan'][ip]['portused'][port]['state'])) + Style.RESET_ALL)
+                elif len(result['scan'][ip]['portused'][port]['name']) != 0 :
+                    print(Fore.YELLOW + ' ~ Port : %s\tName : %s\tState : %s' % (str(port),str(result['scan'][ip]['portused'][port]['name']), str(result['scan'][ip]['portused'][port]['state'])) + Style.RESET_ALL)
 #Pretty banner
 print("-" * 50)
 print("Bienvenu dans l'outil de scanning réseaux IF27")
@@ -43,9 +60,10 @@ if platform == "linux" or platform == "linux2":
     os.system('ifconfig | grep "inet " | tr -s "[:blank:]" | cut -d " " -f 3 > temp.txt')
     with open("temp.txt","r") as file:
         for line in file:
-            ipaddr = re.search(r'((?!127)([0-9]{3})((?:\.[0-9]+){3}))',line)
+            ipaddr = re.search(r'(([0-9]+)((?:\.[0-9]+){3}))',line)
             if ipaddr is not None:
-                network.append(ipaddr.group(0))
+                if(ipaddr.group(0).split('.')[0]) != 127 :
+                    network.append(ipaddr.group(0))
     os.system("rm temp.txt")
 elif platform == "darwin":
     print("Votre système d'exploitation est incompatible")
@@ -81,7 +99,7 @@ if int(choise) in availableChoise :
         splitNetwork[3] = str(i)
         result = str(ping(str('.'.join(splitNetwork)),count=1,size=64,timeout=0.01))
         if "Reply" in result:
-            ipaddr = re.search(r'((?!127)([0-9]{3})((?:\.[0-9]+){3}))',result)
+            ipaddr = re.search(r'(([0-9]+)((?:\.[0-9]+){3}))',result)
             if ipaddr is not None:
                 discovredDevice.append(ipaddr.group(0))
 else:
