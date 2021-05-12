@@ -42,7 +42,7 @@ elif platform == "win32":
     with open("temp.txt","r") as file:
         for line in file:
             if "IPv4" in line:
-                ipaddr = re.search(r'((?!127)([0-9]{3})((?:\.[0-9]+){3}))',line)
+                ipaddr = re.search(r'(([0-9]+)((?:\.[0-9]+){3}))',line)
                 if ipaddr is not None:
                     network.append(ipaddr.group(0))
     os.system("del temp.txt")
@@ -91,7 +91,7 @@ while choice in availablechoice:
         if platform == "linux" or platform == "linux2":
             os.system("gnome-terminal -- bash -c source "+activatenv+"; "+pythonenv+" "+sys.exec_prefix+"/../device.py "+choosenDevice+";exec bash")
         elif platform == "win32":
-            os.system("start cmd /k \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
+            os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
         availablechoice.remove(int(choice))
         discovredDevice.remove(choosenDevice)
         if len(availablechoice) == 0 :
