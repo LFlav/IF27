@@ -89,7 +89,7 @@ while choice in availablechoice:
     if int(choice) in availablechoice :
         choosenDevice = discovredDevice[int(choice)-1]
         if platform == "linux" or platform == "linux2":
-            os.system("gnome-terminal -- bash -c source "+activatenv+"; "+pythonenv+" "+sys.exec_prefix+"/../device.py "+choosenDevice+";exec bash")
+            os.system("gnome-terminal --tab -- "+pythonenv+" "+sys.exec_prefix+"/../device.py "+choosenDevice+" ")
         elif platform == "win32":
             os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
         availablechoice.remove(int(choice))
