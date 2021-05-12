@@ -57,7 +57,7 @@ for number, line in enumerate(file.readlines()):
     pourcentage: float = number / line_count * 100 #pourcentage en float du total parcouru ATTENTION la donnée n'est pas encore traitée
     x = threading.Thread(target=sshconnect, args=(pourcentage, args.host, args.user, line.strip())) #création du multi threading
     x.start() # démarrage du multi threading
-    time.sleep(0.3) # on pause le programme pour 3 dixieme de seconde sinon le serveur ssh ne repond plus car trop de requete il y a du déni de service
+    time.sleep(1) # on pause le programme pour 3 dixieme de seconde sinon le serveur ssh ne repond plus car trop de requete il y a du déni de service
     if len(MaListe) > count: #Ca permet de savoir quand il faut ajouter un pourcentage à la barre de chargement
         try:
             pbar.update(len(MaListe))#update de la barre avec la nouvelle longueue
