@@ -88,29 +88,36 @@ for ipaddr in discovredDevice:
     i += 1
 choice = 1
 while choice in availablechoice:
-    print("-" * 50)
-    choice = input("Choissisez un appareil : ")
-    if int(choice) in availablechoice :
-        choosenDevice = discovredDevice[int(choice)-1]
-        if platform == "linux" or platform == "linux2":
-            os.system("gnome-terminal --tab -- "+pythonenv+" "+sys.exec_prefix+"/../device.py "+choosenDevice+" ")
-        elif platform == "win32":
-            os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
-        availablechoice.remove(int(choice))
-        discovredDevice.remove(choosenDevice)
-        if len(availablechoice) == 0 :
-            print("-" * 50)
-            print("Aucun appareil disponible")
+    try:
+        print("-" * 50)
+        choice = input("Choissisez un appareil : ")
+        if int(choice) in availablechoice :
+            choosenDevice = discovredDevice[int(choice)-1]
+            if platform == "linux" or platform == "linux2":
+                os.system("gnome-terminal --tab -- "+pythonenv+" "+sys.exec_prefix+"/../device.py "+choosenDevice+" ")
+            elif platform == "win32":
+                #ouvre un nouveau terminal qui se coupe une fois le programme fini
+                #os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
+                #ouvre un nouveau terminal et le laisse ouvert (mode debug)
+                os.system("start cmd /k \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
+            availablechoice.remove(int(choice))
+            discovredDevice.remove(choosenDevice)
+            if len(availablechoice) == 0 :
+                print("-" * 50)
+                print("Aucun appareil disponible")
+            else:
+                print("-" * 50)
+                availablechoice = []
+                i = 1
+                for ipaddr in discovredDevice:
+                    print("Appareil "+str(i)+" : "+ipaddr)
+                    availablechoice.append(i)
+                    i += 1
+                choice = availablechoice[0]
         else:
-            print("-" * 50)
-            availablechoice = []
-            i = 1
-            for ipaddr in discovredDevice:
-                print("Appareil "+str(i)+" : "+ipaddr)
-                availablechoice.append(i)
-                i += 1
-            choice = availablechoice[0]
-    else:
+            print("Choix non valide")
+            sys.exit()
+    except ValueError:
         print("Choix non valide")
         sys.exit()
 
