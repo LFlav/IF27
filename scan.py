@@ -30,7 +30,7 @@ if platform == "linux" or platform == "linux2":
         for line in file:
             ipaddr = re.search(r'(([0-9]+)((?:\.[0-9]+){3}))',line)
             if ipaddr is not None:
-                if(ipaddr.group(0).split('.')[0]) != 127 :
+                if(int(ipaddr.group(0).split('.')[0])) != 127 :
                     network.append(ipaddr.group(0))
     os.system("rm temp.txt")
 elif platform == "darwin":
@@ -58,19 +58,23 @@ for ipaddr in network:
     i += 1
 
 #Let user choose a network and ping form x.x.x.1 to x.x.x.253
-discovredDevice = []
-choice = input("Choissisez un réseau : ")
-if int(choice) in availablechoice :
-    choosenNetwork = network[int(choice)-1]
-    splitNetwork = choosenNetwork.split('.')
-    for i in range(1,254):
-        splitNetwork[3] = str(i)
-        result = str(ping(str('.'.join(splitNetwork)),count=1,size=64,timeout=0.01))
-        if "Reply" in result:
-            ipaddr = re.search(r'(([0-9]+)((?:\.[0-9]+){3}))',result)
-            if ipaddr is not None:
-                discovredDevice.append(ipaddr.group(0))
-else:
+try:
+    discovredDevice = []
+    choice = input("Choissisez un réseau : ")
+    if int(choice) in availablechoice :
+        choosenNetwork = network[int(choice)-1]
+        splitNetwork = choosenNetwork.split('.')
+        for i in range(1,254):
+            splitNetwork[3] = str(i)
+            result = str(ping(str('.'.join(splitNetwork)),count=1,size=64,timeout=0.01))
+            if "Reply" in result:
+                ipaddr = re.search(r'(([0-9]+)((?:\.[0-9]+){3}))',result)
+                if ipaddr is not None:
+                    discovredDevice.append(ipaddr.group(0))
+    else:
+        print("Choix non valide")
+        sys.exit()
+except ValueError:
     print("Choix non valide")
     sys.exit()
 
