@@ -79,9 +79,9 @@ def launchbruteforce(choosenDevice,filename):
         os.system("gnome-terminal --tab -- "+pythonenv+" "+sys.exec_prefix+"/../bruteforce.py "+choosenDevice+" "+user+" "+filename)
     elif platform == "win32":
         #ouvre un nouveau terminal qui se coupe une fois le programme fini
-        #os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\bruteforce.py "+choosenDevice+" "+user+" "+filename+"\"")
+        os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\bruteforce.py "+choosenDevice+" "+user+" "+filename+"\"")
         #ouvre un nouveau terminal et le laisse ouvert (mode debug)
-        os.system("start cmd /k \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\bruteforce.py "+choosenDevice+" "+user+" "+filename+"\"")
+        #os.system("start cmd /k \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\bruteforce.py "+choosenDevice+" "+user+" "+filename+"\"")
 
 def exploitssh(choosenDevice):
     availableResponseSSH = ['1','2','3','4','q']
@@ -94,10 +94,14 @@ def exploitssh(choosenDevice):
                             4)Dictionnaire personnalisé
                             q)Revenir au scan\n""")
         print("Vous avez choisi l'option: ", response)
-        if response == '1':
-            print("choix 1")
+        if response == '1' :
+            command = input("Commande a executé (cette expploit ne peux éxecuter qu'une seul commande)\n pour des argument utiliser les symbole \" \" ":")
+            if platform == "linux" or platform == "linux2":
+                os.system("gnome-terminal --tab -- "+pythonenv+" "+sys.exec_prefix+"/../exploit.py "+choosenDevice+" "+str(flagService[0][0])+" "+command)
+            elif platform == "win32":
+                #ouvre un nouveau terminal qui se coupe une fois le programme fini
+                os.system("start cmd /k \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\exploit.py "+choosenDevice+" "+str(flagService[0][0])+" "+command+"\"")
         elif response == '2':
-            print("choix 2")
             launchbruteforce(choosenDevice,"passlist.txt")
         elif response == '3':
             launchbruteforce(choosenDevice,"passlist2.txt")

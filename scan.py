@@ -97,9 +97,9 @@ while choice in availablechoice:
                 os.system("gnome-terminal --tab -- "+pythonenv+" "+sys.exec_prefix+"/../device.py "+choosenDevice+" ")
             elif platform == "win32":
                 #ouvre un nouveau terminal qui se coupe une fois le programme fini
-                #os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
+                os.system("start cmd /c \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
                 #ouvre un nouveau terminal et le laisse ouvert (mode debug)
-                os.system("start cmd /k \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
+                #os.system("start cmd /k \""+activatenv+" && "+pythonenv+" "+sys.exec_prefix+"\\..\\device.py "+choosenDevice+"\"")
             availablechoice.remove(int(choice))
             discovredDevice.remove(choosenDevice)
             if len(availablechoice) == 0 :
