@@ -95,7 +95,7 @@ def exploitssh(choosenDevice):
                             q)Revenir au scan\n""")
         print("Vous avez choisi l'option: ", response)
         if response == '1' :
-            command = input("Commande a executé (cette expploit ne peux éxecuter qu'une seul commande)\n pour des argument utiliser les symbole \" \" ":")
+            command = input("Commande a executé (cette expploit ne peux éxecuter qu'une seul commande)\n pour des argument utiliser les symbole \" \" :")
             if platform == "linux" or platform == "linux2":
                 os.system("gnome-terminal --tab -- "+pythonenv+" "+sys.exec_prefix+"/../exploit.py "+choosenDevice+" "+str(flagService[0][0])+" "+command)
             elif platform == "win32":
